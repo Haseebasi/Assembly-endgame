@@ -23,7 +23,7 @@ export default function AssemblyEndgame() {
     const isGameOver = isGameWon || isGameLost
     const lastGuessedLetter = guessedLetters[guessedLetters.length - 1]
     const isLastGuessIncorrect = lastGuessedLetter && !currentWord.includes(lastGuessedLetter)
-
+    let isTimeflash = false
     // Static values
     const alphabet = "abcdefghijklmnopqrstuvwxyz"
 
@@ -40,7 +40,8 @@ export default function AssemblyEndgame() {
     setGuessedLetters([])
     setTimeLeft(60)
     setIsTimeOut(false)
-}
+    }
+    
 
     useEffect(() => {
     
@@ -54,6 +55,9 @@ export default function AssemblyEndgame() {
 
     const timerId = setInterval(() => {
         setTimeLeft(prevTime => prevTime - 1)
+        if(timeLeft<=10){
+            isTimeflash=!isTimeflash
+        }
     }, 1000)
 
     return () => clearInterval(timerId)
@@ -172,7 +176,10 @@ export default function AssemblyEndgame() {
             <section className="language-chips">
                 {languageElements}
             </section>
-            <section className="time-left">
+            <section className={clsx(timeLeft>30 && "time-left",
+                timeLeft<=30 && "time-half",
+                timeLeft<=10 && "time-end",
+                isTimeflash && "non-visible")}>
                 <span>{timeLeft}</span>
             </section>
 
@@ -180,7 +187,7 @@ export default function AssemblyEndgame() {
                 {letterElements}
             </section>
 
-            {/* Combined visually-hidden aria-live region for status updates */}
+            
             <section
                 className="sr-only"
                 aria-live="polite"

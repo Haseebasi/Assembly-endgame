@@ -113,6 +113,9 @@ section.time-half{
 section.time-end{
     color:red;
 }
+section.non-visible{
+    opacity: 0;
+}
 
 section.word {
     display: flex;
