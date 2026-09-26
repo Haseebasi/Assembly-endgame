@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react"
+import { useState,useEffect,useRef } from "react"
 import { clsx } from "clsx"
 import { languages } from "./languages.js"
 import { getFarewellText, getRandomWord } from "./utils.js"
@@ -12,7 +12,7 @@ export default function AssemblyEndgame() {
     const [guessedLetters, setGuessedLetters] = useState([])
     const [timeLeft,setTimeLeft] = useState(60)
     const [isTimeOut,setIsTimeOut] = useState(false)
-    
+    const farewellTextRef = useRef("")
     // Derived values
     const numGuessesLeft = languages.length - 1
     const wrongGuessCount =
@@ -33,6 +33,12 @@ export default function AssemblyEndgame() {
                 prevLetters :
                 [...prevLetters, letter]
         )
+        if (!currentWord.includes(letter)) {
+        const lostLanguage = languages[wrongGuessCount].name
+        farewellTextRef.current = getFarewellText(lostLanguage)
+    } else {
+        farewellTextRef.current = ""
+    }
     }
     
     function startNewGame() {
@@ -40,6 +46,7 @@ export default function AssemblyEndgame() {
     setGuessedLetters([])
     setTimeLeft(60)
     setIsTimeOut(false)
+    farewellTextRef.current = ""
     }
     
 
@@ -118,17 +125,17 @@ export default function AssemblyEndgame() {
     const gameStatusClass = clsx("game-status", {
         won: isGameWon,
         lost: isGameLost,
-        farewell: !isGameOver && isLastGuessIncorrect
+        farewell: !isGameOver && isLastGuessIncorrect,
     })
 
     function renderGameStatus() {
         if (!isGameOver && isLastGuessIncorrect) {
-            return (
-                <p className="farewell-message">
-                    {getFarewellText(languages[wrongGuessCount - 1].name)}
-                </p>
-            )
-        }
+        return (
+            <p className="farewell-message">
+                {farewellTextRef.current}
+            </p>
+        )
+    }
 
         if (isGameWon) {
             return (
@@ -176,7 +183,7 @@ export default function AssemblyEndgame() {
             <section className="language-chips">
                 {languageElements}
             </section>
-            <section className={clsx(timeLeft>30 && "time-left",
+            <section className={clsx("time-left",
                 timeLeft<=30 && "time-half",
                 timeLeft<=10 && "time-end",
                 isTimeflash && "non-visible")}>
