@@ -1,35 +1,25 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import { clsx } from "clsx"
-import { languages } from "./languages"
-import { getFarewellText, getRandomWord } from "./utils"
+import { languages } from "./languages.js"
+import { getFarewellText, getRandomWord } from "./utils.js"
 import Confetti from "react-confetti"
 
-/**
- * Backlog:
- * 
- * ✅ Farewell messages in status section
- * ✅ Disable the keyboard when the game is over
- * ✅ Fix a11y issues
- * ✅ Choose a random word from a list of words
- * ✅ Make the New Game button reset the game
- * ✅ Reveal what the word was if the user loses the game
- * ✅ Confetti drop when the user wins
- * 
- * Challenge: 🎊🎊🎊🎊🎊
- */
+
 
 export default function AssemblyEndgame() {
     // State values
     const [currentWord, setCurrentWord] = useState(() => getRandomWord())
     const [guessedLetters, setGuessedLetters] = useState([])
-
+    const [timeLeft,setTimeLeft] = useState(60)
+    const [isTimeOut,setIsTimeOut] = useState(false)
+    
     // Derived values
     const numGuessesLeft = languages.length - 1
     const wrongGuessCount =
         guessedLetters.filter(letter => !currentWord.includes(letter)).length
     const isGameWon =
         currentWord.split("").every(letter => guessedLetters.includes(letter))
-    const isGameLost = wrongGuessCount >= numGuessesLeft
+    const isGameLost = wrongGuessCount >= numGuessesLeft || isTimeOut
     const isGameOver = isGameWon || isGameLost
     const lastGuessedLetter = guessedLetters[guessedLetters.length - 1]
     const isLastGuessIncorrect = lastGuessedLetter && !currentWord.includes(lastGuessedLetter)
@@ -44,12 +34,30 @@ export default function AssemblyEndgame() {
                 [...prevLetters, letter]
         )
     }
-
+    
     function startNewGame() {
-        setCurrentWord(getRandomWord())
-        setGuessedLetters([])
+    setCurrentWord(getRandomWord())
+    setGuessedLetters([])
+    setTimeLeft(60)
+    setIsTimeOut(false)
+}
+
+    useEffect(() => {
+    
+    if (isGameOver) return
+
+    
+    if (timeLeft === 0) {
+        setIsTimeOut(true)
+        return
     }
 
+    const timerId = setInterval(() => {
+        setTimeLeft(prevTime => prevTime - 1)
+    }, 1000)
+
+    return () => clearInterval(timerId)
+}, [timeLeft, isGameOver])
     const languageElements = languages.map((lang, index) => {
         const isLanguageLost = index < wrongGuessCount
         const styles = {
@@ -163,6 +171,9 @@ export default function AssemblyEndgame() {
 
             <section className="language-chips">
                 {languageElements}
+            </section>
+            <section className="time-left">
+                <span>{timeLeft}</span>
             </section>
 
             <section className="word">

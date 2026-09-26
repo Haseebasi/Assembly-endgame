@@ -103,6 +103,17 @@ span.chip.lost::before {
     background-color: rgba(0, 0, 0, 0.7);
 }
 
+section.time-left{
+    margin: 0.5em;
+    font-weight: bold;
+}
+section.time-half{
+    color:orange;
+}
+section.time-end{
+    color:red;
+}
+
 section.word {
     display: flex;
     justify-content: center;
