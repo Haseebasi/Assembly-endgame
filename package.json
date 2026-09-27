@@ -3,21 +3,21 @@
   "type": "module",
   "description": "https://scrimba.com/fullstack-path-c0fullstack/~06jd",
   "scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "preview": "vite preview",
-  "predeploy": "npm run build",
-  "deploy": "gh-pages -d dist"
-},
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
   "dependencies": {
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
     "clsx": "2.1.1",
+    "react": "18.3.1",
     "react-confetti": "6.1.0",
+    "react-dom": "18.3.1",
     "vite": "latest"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "*",
-    "gh-pages": "^6.1.1"
+    "gh-pages": "^6.3.0"
   }
 }
