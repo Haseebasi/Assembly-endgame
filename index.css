@@ -8,7 +8,7 @@ body {
     background-color: #262626;
     color: #D9D9D9;
     padding: 20px;
-    height: 100vh;
+    min-height: 100vh;
 }
 
 main {
@@ -44,6 +44,8 @@ section.game-status {
     min-height: 60px;
     border-radius: 4px;
     margin-block: 30px;
+    text-align: center;
+    padding: 10px;
 }
 
 section.game-status.won {
@@ -70,7 +72,7 @@ section.game-status > p.farewell-message {
 
 section.game-status > h2 {
     font-size: 1.25rem;
-    margin: 5px
+    margin: 5px;
 }
 
 section.language-chips {
@@ -79,7 +81,7 @@ section.language-chips {
     gap: 5px;
     justify-content: center;
     max-width: 350px;
-    margin-bottom: 36px;
+    margin-bottom: 24px;
 }
 
 span.chip {
@@ -88,7 +90,7 @@ span.chip {
     position: relative;
 }
 
-/* Dimmed overlay with skull on "lost" languages */
+
 span.chip.lost::before {
     content: "💀";
     position: absolute;
@@ -103,18 +105,34 @@ span.chip.lost::before {
     background-color: rgba(0, 0, 0, 0.7);
 }
 
-section.time-left{
-    margin: 0.5em;
+/* Timer Section Styling */
+section.time-left {
+    margin-bottom: 1em;
     font-weight: bold;
+    font-size: 1.2rem;
+    color: #10A95B;
+    transition: color 0.3s ease;
 }
-section.time-half{
-    color:orange;
+
+section.time-half {
+    color: orange;
 }
-section.time-end{
-    color:red;
+
+section.time-end {
+    color: #EC5D49;
 }
-section.non-visible{
-    opacity: 0;
+
+section.flash {
+    animation: flash-timer 0.8s infinite steps(2, start);
+}
+
+@keyframes flash-timer {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0;
+    }
 }
 
 section.word {
@@ -155,19 +173,22 @@ section.keyboard > button {
     border: 1px solid #D7D7D7;
     border-radius: 3px;
     cursor: pointer;
+    font-weight: bold;
 }
 
 section.keyboard > button.correct {
     background-color: #10A95B;
+    color: #FFFFFF;
 }
 
 section.keyboard > button.wrong {
     background-color: #EC5D49;
+    color: #FFFFFF;
 }
 
 section.keyboard > button:disabled {
     cursor: not-allowed;
-    opacity: 0.5
+    opacity: 0.5;
 }
 
 button.new-game {
@@ -180,6 +201,9 @@ button.new-game {
     display: block;
     margin-inline: auto;
     cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    color: #1E1E1E;
 }
 
 .sr-only {

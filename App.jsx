@@ -51,10 +51,8 @@ export default function AssemblyEndgame() {
     
 
     useEffect(() => {
-    
     if (isGameOver) return
 
-    
     if (timeLeft === 0) {
         setIsTimeOut(true)
         return
@@ -62,9 +60,6 @@ export default function AssemblyEndgame() {
 
     const timerId = setInterval(() => {
         setTimeLeft(prevTime => prevTime - 1)
-        if(timeLeft<=10){
-            isTimeflash=!isTimeflash
-        }
     }, 1000)
 
     return () => clearInterval(timerId)
@@ -183,10 +178,11 @@ export default function AssemblyEndgame() {
             <section className="language-chips">
                 {languageElements}
             </section>
-            <section className={clsx("time-left",
-                timeLeft<=30 && "time-half",
-                timeLeft<=10 && "time-end",
-                isTimeflash && "non-visible")}>
+            <section className={clsx(
+                "time-left",
+                timeLeft <= 30 && "time-half",
+                timeLeft <= 10 && "time-end flash"
+                )}>
                 <span>{timeLeft}</span>
             </section>
 
